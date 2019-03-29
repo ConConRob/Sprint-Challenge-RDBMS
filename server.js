@@ -43,34 +43,23 @@ server.post("/api/actions", (req, res) => {
 
 server.get("/api/projects/:id", async (req, res) => {
   const id = req.params.id;
-  const project = await db("projects").where({ id });
-  const actions = await db
-    .select("actions.id", "actions.description", "actions.note", "actions.completed")
-    .from("projects")
-    .innerJoin("actions", "projects.id", "=", "actions.project_id")
-    .where("projects.id","=",id);
-  
-  res.status(200).json({...project, actions: actions});
+  try {
+    const project = await db("projects").where({ id });
+    const actions = await db
+      .select(
+        "actions.id",
+        "actions.description",
+        "actions.note",
+        "actions.completed"
+      )
+      .from("projects")
+      .innerJoin("actions", "projects.id", "=", "actions.project_id")
+      .where("projects.id", "=", id);
+
+    res.status(200).json({ ...project, actions: actions });
+  } catch (error) {
+    res.status(400).json({ message: "Id not found", error });
+  }
 });
 
-// {
-//   id: 1,
-//   name: 'project name here',
-//   description: 'the project description',
-//   completed: false, // or true, the database will return 1 for true and 0 for false
-//   actions: [
-//     {
-//       id: 1,
-//       description: 'action description',
-//       notes: 'the action notes',
-//       completed: false // or true
-//     },
-//     {
-//       id: 7,
-//       description: 'another action description',
-//       notes: 'the action notes',
-//       completed: false // or true
-//     }
-//   ]
-// }
 module.exports = server;
