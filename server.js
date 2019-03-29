@@ -45,7 +45,7 @@ server.get("/api/projects/:id", async (req, res) => {
   const id = req.params.id;
   const project = await db("projects").where({ id });
   const actions = await db
-    .select()
+    .select("actions.id", "actions.description", "actions.note", "actions.completed")
     .from("projects")
     .innerJoin("actions", "projects.id", "=", "actions.project_id")
     .where("projects.id","=",id);
