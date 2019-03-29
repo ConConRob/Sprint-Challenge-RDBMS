@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .unique();
     table.string("note", 255);
-    table.boolean("completed").defaultsTo(false);
+    table.boolean("completed").defaultTo(false);
     table
       .integer("project_id")
       .notNullable()

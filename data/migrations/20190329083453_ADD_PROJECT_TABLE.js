@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
       .notNullable()
       .unique();
     table.string("description", 255);
-    table.boolean("completed").defaultsTo(false);
+    table.boolean("completed").defaultTo(false);
   });
 };
 
