@@ -8,6 +8,12 @@ exports.up = function(knex, Promise) {
       .unique();
     table.string("note", 255);
     table.boolean("completed").defaultsTo(false);
+    table
+      .integer("project_id")
+      .notNullable()
+      .references("id")
+      .inTable("projects")
+      .onDelete('CASCADE');
   });
 };
 
