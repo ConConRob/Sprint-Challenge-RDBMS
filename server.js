@@ -44,7 +44,7 @@ server.post("/api/actions", (req, res) => {
 server.get("/api/projects/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const project = await db("projects").where({ id });
+    const projectArray = await db("projects").where({ id });
     const actions = await db
       .select(
         "actions.id",
@@ -56,7 +56,7 @@ server.get("/api/projects/:id", async (req, res) => {
       .innerJoin("actions", "projects.id", "=", "actions.project_id")
       .where("projects.id", "=", id);
 
-    res.status(200).json({ ...project, actions: actions });
+    res.status(200).json({ ...projectArray[0], actions: actions });
   } catch (error) {
     res.status(400).json({ message: "Id not found", error });
   }
